@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\CartController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,6 +23,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'products' => Product::latest()->get(),
         ]);
     })->name('dashboard');
+
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::get('/cart/list', [CartController::class, 'getCart'])->name('cart.list');
+    Route::post('/cart/{id}/cancel', [CartController::class, 'cancel'])->name('cart.cancel');
+
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
